@@ -57,13 +57,13 @@ public class Role implements GrantedAuthority {
         this.users = users;
     }
 
+    public String getRoleName() {
+        return roleName;
+    }
+
     @Override
     public String getAuthority() {
         return getRoleName();
-    }
-
-    private String getRoleName() {
-        return roleName;
     }
 
     @Override

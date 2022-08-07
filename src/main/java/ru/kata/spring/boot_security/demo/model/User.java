@@ -102,6 +102,16 @@ public class User implements UserDetails {
         roles.add(role);
     }
 
+    public String getRolesString(){
+        StringBuilder str = new StringBuilder();
+        for (Role role : roles) {
+            str.append(role.getRoleName());
+            str.append(" ");
+        }
+        return (str.length() > 0) ? str.deleteCharAt(str.length() - 1).toString()
+                : "";
+    }
+
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return getRoles();

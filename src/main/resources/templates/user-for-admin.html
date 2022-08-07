@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+          integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+
+    <title>User page</title>
+</head>
+<body>
+
+<header class="navbar navbar-dark sticky-top bg-dark flex-md-nowrap p-1 shadow">
+    <a class="navbar-brand col-md-3" href="#">
+        <b th:utext="${user.username}"></b>
+        <lable>with roles:</lable>
+        <lable th:text="${user.getRolesString()}"></lable>
+    </a>
+    <button class="navbar-toggle position-absolute d-md-none collapsed" type="button" data-bs-toggle="collapse"
+            data-bs-target="#sidebarMenu" aria-controls="sidebarMenu" aria-expanded="false"
+            aria-label="Toggle navigation">
+        <span class="navbar-toggle-icon"></span>
+    </button>
+    <div class="navbar-nav">
+        <div class="nav-item text-nowrap">
+            <a href="/logout" class="text-white-50 col-md-1" style="text-decoration: none;">Logout</a>
+        </div>
+    </div>
+</header>
+
+<div class="container-fluid h-100">
+    <div class="row h-100">
+
+        <div class="p-0 col-2">
+            <div class="nav flex-column nav-pills pt-3" id="v-pills-tab" role="tablist" aria-orientation="vertical">
+                <a class="nav-link " href="/admin" sec:authorize="(hasAuthority('ROLE_ADMIN'))" role="tab"
+                   aria-controls="v-pills-profile">Admin</a>
+                <a class="nav-link active" href="/user-for-admin"
+                   sec:authorize="(hasAnyAuthority('ROLE_USER', 'ROLE_ADMIN'))" role="tab"
+                   aria-controls="v-pills-profile">User</a>
+            </div>
+        </div>
+
+        <div class="p-0 col-10 bg-light">
+            <div style="margin-top:-10px"></div>
+            <div class="tabs p-4">
+                <h1>User information-page</h1>
+                <div class="pt-2 tab-content">
+                    <div class="tab-pane fade show active" id="description">
+                        <div class="p-3 border">
+                            <h5 class="my-0 mx-2">About user</h5>
+                        </div>
+                        <div class="p-3 bg-white border border-bottom-0">
+                            <table class="usersTable table table-striped bg-white">
+                                <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>First Name</th>
+                                    <th>Last Name</th>
+                                    <th>Role</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr>
+                                    <td th:text="${user.id}">ID</td>
+                                    <td th:text="${user.firstName}">First Name</td>
+                                    <td th:text="${user.lastName}">Last Name</td>
+                                    <td>
+                                        <div th:each="role : ${user.getRoles()}">
+                                            <a th:text="${role.getRoleName()}">USER</a>
+                                        </div>
+                                    </td>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div style="margin-top:395px"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+        integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+        crossorigin="anonymous"></script>
+
+
+</body>
+</html>

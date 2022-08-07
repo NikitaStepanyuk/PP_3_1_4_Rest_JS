@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+          integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <meta charset="UTF-8">
+    <title>Login page</title>
+</head>
+<body>
+<div>
+    <div class="form">
+        <div style="margin-top:44px"></div>
+        <div class="mx-auto mt-1" style="width: 290px;">
+            <h4 class="font-weight-bold">Please sign in</h4>
+            <div style="margin-top:14px"></div>
+            <form th:action="@{/login}" method="POST">
+                <div class="form-group">
+                    <input class="form-control" id="username" type="text" name="username" placeholder="Username"/>
+                    <input class="form-control" id="password" type="password" name="password" placeholder="Password"/>
+                </div>
+                <div style="margin-top:-8px"></div>
+                <button type="submit" class="btn btn-primary btn-lg w-100">Sign in</button>
+            </form>
+        </div>
+    </div>
+</div>
+</body>
+</html>
