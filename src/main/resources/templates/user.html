@@ -37,11 +37,8 @@
 
         <div class="p-0 col-2">
             <div class="nav flex-column nav-pills pt-3" id="v-pills-tab" role="tablist" aria-orientation="vertical">
-                <a class="nav-link " href="/admin" sec:authorize="(hasAuthority('ROLE_ADMIN'))" role="tab"
-                   aria-controls="v-pills-profile">Admin</a>
-                <a class="nav-link active" href="/user-for-admin"
-                   sec:authorize="(hasAnyAuthority('ROLE_USER', 'ROLE_ADMIN'))" role="tab"
-                   aria-controls="v-pills-profile">User</a>
+                <a sec:authorize="hasAuthority('ROLE_ADMIN')" class="nav-link" href="/admin" role="tab" aria-controls="v-pills-profile">Admin</a>
+                <a class="nav-link active" href="/user" role="tab" aria-controls="v-pills-profile">User</a>
             </div>
         </div>
 

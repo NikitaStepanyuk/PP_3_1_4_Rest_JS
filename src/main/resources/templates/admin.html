@@ -1,7 +1,6 @@
 <!DOCTYPE html>
 <html lang="en" xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:th="http://www.thymeleaf.org"
-      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+      xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
@@ -35,10 +34,8 @@
 
         <div class="p-0 col-2">
             <div class="nav flex-column nav-pills pt-3" id="v-pills-tab" role="tablist" aria-orientation="vertical">
-                <a class="nav-link active" href="/admin" sec:authorize="hasAuthority('ROLE_ADMIN')" role="tab"
-                   aria-controls="v-pills-home">Admin</a>
-                <a class="nav-link" href="/user-for-admin" sec:authorize="(hasAnyAuthority('ROLE_ADMIN'))" role="tab"
-                   aria-controls="v-pills-profile">User</a>
+                <a class="nav-link active" href="/admin" role="tab" aria-controls="v-pills-home">Admin</a>
+                <a class="nav-link" href="/user" role="tab" aria-controls="v-pills-user">User</a>
             </div>
         </div>
 
@@ -372,6 +369,7 @@
         </div>
     </div>
 </div>
+
 
 <script src="https://code.jquery.com/jquery-3.5.0.js"
         integrity="sha256-r/AaFHrszJtwpe+tHyNi/XCfMxYpbsRg2Uqn0x3s2zc=" crossorigin="anonymous"></script>
