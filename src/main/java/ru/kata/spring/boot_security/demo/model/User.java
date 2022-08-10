@@ -7,7 +7,6 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
 import java.util.Collection;
-import java.util.HashSet;
 import java.util.Set;
 
 @Entity
@@ -26,9 +25,8 @@ public class User implements UserDetails {
 
     private String password;
 
-    @ManyToMany(fetch = FetchType.LAZY)
-    @JoinTable(name = "users_roles",
-            joinColumns = {@JoinColumn(name = "user_id", referencedColumnName = "id")},
+    @ManyToMany(fetch = FetchType.EAGER, cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    @JoinTable(name = "users_roles", joinColumns = {@JoinColumn(name = "user_id", referencedColumnName = "id")},
             inverseJoinColumns = {@JoinColumn(name = "role_id", referencedColumnName = "id")})
     @Fetch(FetchMode.JOIN)
     private Set<Role> roles;
@@ -93,23 +91,6 @@ public class User implements UserDetails {
 
     public void setRoles(Set<Role> roles) {
         this.roles = roles;
-    }
-
-    public void addRole(Role role) {
-        if (roles == null) {
-            roles = new HashSet<>();
-        }
-        roles.add(role);
-    }
-
-    public String getRolesString(){
-        StringBuilder str = new StringBuilder();
-        for (Role role : roles) {
-            str.append(role.getRoleName());
-            str.append(" ");
-        }
-        return (str.length() > 0) ? str.deleteCharAt(str.length() - 1).toString()
-                : "";
     }
 
     @Override

@@ -7,7 +7,6 @@ import ru.kata.spring.boot_security.demo.repository.RoleRepository;
 
 import javax.transaction.Transactional;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 @Service
@@ -22,22 +21,17 @@ public class RoleServiceImpl implements RoleService {
     }
 
     @Override
-    public List<Role> findAllRole() {
-        return roleRepository.findAllRole();
-    }
-
-    @Override
     public Role getRoleByName(String roleName) {
         return roleRepository.getRoleByName(roleName);
     }
 
     @Override
-    public Set<Role> getRolesByArray(String[] newRoles) {
-        Set<Role> rolesSet = new HashSet<>();
-        for (String newRole : newRoles) {
-            rolesSet.add(roleRepository.getRoleByName(newRole));
+    public Set<Role> getPersistRolesByRoleSet(Set<Role> roles) {
+        Set<Role> roleSet = new HashSet<>();
+        for (Role role : roles){
+            roleSet.add(roleRepository.getRoleByName(role.getRoleName()));
         }
-        return rolesSet;
+        return roleSet;
     }
 
 }

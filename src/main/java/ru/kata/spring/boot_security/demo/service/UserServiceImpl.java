@@ -7,6 +7,7 @@ import org.springframework.transaction.annotation.Transactional;
 import ru.kata.spring.boot_security.demo.model.User;
 import ru.kata.spring.boot_security.demo.repository.UserRepository;
 
+import java.util.HashSet;
 import java.util.List;
 
 @Service
@@ -15,9 +16,12 @@ public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
 
+    private final RoleServiceImpl roleService;
+
     @Autowired
-    public UserServiceImpl(UserRepository userRepository) {
+    public UserServiceImpl(UserRepository userRepository, RoleServiceImpl roleService) {
         this.userRepository = userRepository;
+        this.roleService = roleService;
     }
 
     @Autowired
@@ -28,20 +32,22 @@ public class UserServiceImpl implements UserService {
     @Override
     public void createUser(User user) {
         user.setPassword(bCryptPasswordEncoder().encode(user.getPassword()));
+        user.setRoles(roleService.getPersistRolesByRoleSet(user.getRoles()));
         userRepository.createUser(user);
     }
 
     @Override
     public void deleteUser(Long id) {
+        User user = readUser(id);
+        user.setRoles(new HashSet<>());
+        userRepository.updateUser(user);
         userRepository.deleteUser(id);
     }
 
     @Override
     public void updateUser(User user) {
-        boolean passwordIsNotChanged = userRepository.readUser(user.getId()).getPassword().equals(user.getPassword());
-        if (!passwordIsNotChanged) {
-            user.setPassword(bCryptPasswordEncoder().encode(user.getPassword()));
-        }
+        user.setPassword(bCryptPasswordEncoder().encode(user.getPassword()));
+        user.setRoles(roleService.getPersistRolesByRoleSet(user.getRoles()));
         userRepository.updateUser(user);
     }
 
