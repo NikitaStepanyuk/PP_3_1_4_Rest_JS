@@ -76,6 +76,7 @@ addUserForm.addEventListener('submit', (e) => {
         .then(data => {
             users = data;
             renderUsers(users);
+            window.location.href="http://localhost:8080/admin";
         })
 })
 
@@ -86,7 +87,6 @@ const on = (element, event, selector, handler) => {
         }
     })
 }
-
 
 on(document, 'click', '#edit-user', e => {
     const userInfo = e.target.parentNode.parentNode
