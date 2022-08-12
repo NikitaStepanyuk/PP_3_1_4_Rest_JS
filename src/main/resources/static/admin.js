@@ -7,7 +7,7 @@ const renderUsers = (users) => {
                     <td>${user.firstName}</td>
                     <td>${user.lastName}</td>
                     <td>${user.username}</td>
-                    <td>${user.roles.map(role => role.roleName === 'ROLE_USER' ? 'USER' : 'ADMIN')}</td>
+                    <td>${user.roles.map(role => role.roleName)}</td>
               <td>
                    <button type="button" data-userid="${user.id}" data-action="edit" class="btn btn-info"
                     data-toggle="modal" data-target="modal" id="edit-user" data-id="${user.id}">Edit</button>
@@ -22,6 +22,7 @@ const renderUsers = (users) => {
 }
 
 let users = [];
+
 const updateUser = (user) => {
     const foundIndex = users.findIndex(x => x.id === user.id);
     users[foundIndex] = user;
@@ -35,16 +36,25 @@ const removeUser = (id) => {
     console.log('users');
 }
 
+const addUser = (user) => {
+    users = users.concat(user);
+    renderUsers(users);
+    console.log('users');
+}
+
+
 
 const info = document.querySelector('#allUsers');
-const url = 'http://localhost:8080/api/admin/user'
+const url = 'http://localhost:8080/api/admin'
 
 fetch(url, {mode: 'cors'})
     .then(res => res.json())
     .then(data => {
         users = data;
-        renderUsers(data)
+        renderUsers(data);
     })
+
+
 
 
 const addUserForm = document.querySelector('#addUser')
@@ -55,7 +65,9 @@ const addUsername = document.getElementById('username3')
 const addRoles = document.getElementById('roles3')
 
 addUserForm.addEventListener('submit', (e) => {
+
     e.preventDefault();
+
     fetch(url, {
         method: 'POST',
         headers: {
@@ -73,10 +85,9 @@ addUserForm.addEventListener('submit', (e) => {
         })
     })
         .then(res => res.json())
-        .then(data => {
-            users = data;
-            renderUsers(users);
-            window.location.href="http://localhost:8080/admin";
+        .then(data => addUser(data))
+        .then(() => {
+            window.location.href = "http://localhost:8080/admin";
         })
 })
 
@@ -106,7 +117,7 @@ editUserForm.addEventListener('submit', (e) => {
 
     e.preventDefault();
 
-    fetch('http://localhost:8080/api/admin/user/' + currentUserIdd, {
+    fetch('http://localhost:8080/api/admin/' + currentUserIdd, {
 
         method: 'PUT',
         headers: {
@@ -134,19 +145,20 @@ editUserForm.addEventListener('submit', (e) => {
 let currentUserId = null;
 const deleteUserForm = document.querySelector('#modalDelete')
 deleteUserForm.addEventListener('submit', (e) => {
+
     e.preventDefault();
 
-    fetch('http://localhost:8080/api/admin/user/' + currentUserId, {
+    fetch('http://localhost:8080/api/admin/' + currentUserId, {
         method: 'DELETE'
     })
         .then(res => res.json())
-        .then(data => {
-            removeUser(currentUserId);
+        .then(data => removeUser(data))
+        .then(() => {
             deleteUserForm.removeEventListener('submit', () => {
+
             });
-            users = data;
-            renderUsers(users);
-        }).catch((e) => console.error(e))
+        })
+        .catch((e) => console.error(e))
     $("#modalDelete").modal("hide")
 })
 
@@ -171,5 +183,5 @@ fetch(url3)
         loggedUserHeaderElem.innerHTML = `
                 <b th:utext=>${data.username}</b>
                 <lable>with roles:</lable>
-                <lable th:text=>${data.roles.map(role => role.roleName === 'ROLE_USER' ? 'USER' : 'ADMIN')}</lable>`;
+                <lable th:text=>${data.roles.map(role => role.roleName)}</lable>`;
     })
