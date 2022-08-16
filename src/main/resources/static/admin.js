@@ -7,7 +7,7 @@ const renderUsers = (users) => {
                     <td>${user.firstName}</td>
                     <td>${user.lastName}</td>
                     <td>${user.username}</td>
-                    <td>${user.roles.map(role => role.roleName)}</td>
+                    <td>${user.roles.map(role => role.roleName).toString().replace(",", " ")}</td>
               <td>
                    <button type="button" data-userid="${user.id}" data-action="edit" class="btn btn-info"
                     data-toggle="modal" data-target="modal" id="edit-user" data-id="${user.id}">Edit</button>
@@ -64,6 +64,13 @@ const addPassword = document.getElementById('password3')
 const addUsername = document.getElementById('username3')
 const addRoles = document.getElementById('roles3')
 
+const videoSrcArr = ["ADMIN", "USER"],
+    selectEl = document.getElementById('roles3');
+
+for(let i = 0; i < videoSrcArr.length; i++){
+    selectEl.options.add(new Option(videoSrcArr[i], videoSrcArr[i]));
+}
+
 addUserForm.addEventListener('submit', (e) => {
 
     e.preventDefault();
@@ -108,6 +115,13 @@ on(document, 'click', '#edit-user', e => {
     document.getElementById('password0').value = userInfo.children[4].innerHTML
     document.getElementById('roles0').value = userInfo.children[5].innerHTML
 
+    const videoSrcArr = ["ADMIN", "USER"],
+        selectEl = document.getElementById('roles0');
+
+    for(let i = 0; i < videoSrcArr.length; i++){
+        selectEl.options.add(new Option(videoSrcArr[i], videoSrcArr[i]));
+    }
+
     $("#modalEdit").modal("show")
 })
 
@@ -133,10 +147,10 @@ editUserForm.addEventListener('submit', (e) => {
                 Array.from(document.getElementById("roles0"))
                     .filter(option => option.selected)
                     .map(option => option.value)
-
         })
     })
-        .then(res => res.json()).then(data => updateUser(data))
+        .then(res => res.json())
+        .then(data => updateUser(data))
         .catch((e) => console.error(e))
     $("#modalEdit").modal("hide")
 })
@@ -155,7 +169,6 @@ deleteUserForm.addEventListener('submit', (e) => {
         .then(data => removeUser(data))
         .then(() => {
             deleteUserForm.removeEventListener('submit', () => {
-
             });
         })
         .catch((e) => console.error(e))
@@ -170,6 +183,13 @@ on(document, 'click', '#delete-user', e => {
     document.getElementById('username2').value = fila2.children[3].innerHTML
     document.getElementById('roles2').value = fila2.children[4].innerHTML
 
+    const videoSrcArr = ["ADMIN", "USER"],
+        selectEl = document.getElementById('roles2');
+
+    for(let i = 0; i < videoSrcArr.length; i++){
+        selectEl.options.add(new Option(videoSrcArr[i], videoSrcArr[i]));
+    }
+
     $("#modalDelete").modal("show")
 })
 
@@ -183,5 +203,5 @@ fetch(url3)
         loggedUserHeaderElem.innerHTML = `
                 <b th:utext=>${data.username}</b>
                 <lable>with roles:</lable>
-                <lable th:text=>${data.roles.map(role => role.roleName)}</lable>`;
+                <lable th:text=>${data.roles.map(role => role.roleName).toString().replace(",", " ")}</lable>`;
     })

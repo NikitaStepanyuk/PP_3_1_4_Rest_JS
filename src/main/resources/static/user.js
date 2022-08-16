@@ -9,11 +9,11 @@ fetch(url)
         header.innerHTML = `
                 <b th:utext=>${data.username}</b>
                 <lable>with roles:</lable>
-                <lable th:text=>${data.roles.map(role => role.roleName)}</lable>`;
+                <lable th:text=>${data.roles.map(role => role.roleName).toString().replace(",", " ")}</lable>`;
         user.innerHTML = `
                                 <td>${data.id}</td>
                                 <td>${data.firstName}</td>
                                 <td>${data.lastName}</td>
-                                <td>${data.roles.map(role => role.roleName)}</td>
+                                <td>${data.roles.map(role => role.roleName).toString().replace(",", " ")}</td>
                                 `;
     })
