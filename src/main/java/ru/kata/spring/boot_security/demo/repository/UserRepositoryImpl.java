@@ -42,7 +42,7 @@ public class UserRepositoryImpl implements UserRepository{
 
     @Override
     public User findByUsername(String username) {
-        return entityManager.createQuery("SELECT u FROM User u JOIN FETCH u.roles WHERE u.username = :username", User.class)
+        return entityManager.createQuery("SELECT u FROM User u WHERE u.username = :username", User.class)
                 .setParameter("username", username).getSingleResult();
     }
 
